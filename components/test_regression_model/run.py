@@ -3,6 +3,7 @@
 This step takes the best model, tagged with the "prod" tag, and tests it against the test dataset
 """
 import argparse
+import itertools
 import logging
 import wandb
 import mlflow
@@ -18,13 +19,13 @@ logger = logging.getLogger()
 
 def go(args):
 
-    run = wandb.init(job_type="test_model")
+    run = wandb.init(job_type="test_regression_model")
     run.config.update(args)
 
     logger.info("Downloading artifacts")
     # Download input artifact. This will also log that this script is using this
     # particular version of the artifact
-    model_local_path = run.use_artifact(args.mlflow_model).download('./artifacts/random_forest_export_v8')
+    model_local_path = run.use_artifact(args.mlflow_model).download()
 
     # Download test dataset
     test_dataset_path = run.use_artifact(args.test_dataset).file()
@@ -35,10 +36,11 @@ def go(args):
 
     logger.info("Loading model and performing inference on test set")
     sk_pipe = mlflow.sklearn.load_model(model_local_path)
-    y_pred = sk_pipe.predict(X_test)
+    processed_features = list(itertools.chain.from_iterable([x[2] for x in sk_pipe['preprocessor'].transformers]))
+    y_pred = sk_pipe.predict(X_test[processed_features])
 
     logger.info("Scoring")
-    r_squared = sk_pipe.score(X_test, y_test)
+    r_squared = sk_pipe.score(X_test[processed_features], y_test)
 
     mae = mean_absolute_error(y_test, y_pred)
 
