@@ -5,6 +5,8 @@ on the price of similar properties. Your company receives new data in bulk every
 to be retrained with the same cadence, necessitating an end-to-end pipeline that can be reused.
 
 In this project I have build a pipeline.
+You can find my public W&B project here:
+[https://wandb.ai/turegum/nyc_airbnb](ttps://wandb.ai/turegum/nyc_airbnb)
 
 ## Pipeline usage
 ### Cloning the project
