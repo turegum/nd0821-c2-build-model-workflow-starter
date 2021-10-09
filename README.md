@@ -105,9 +105,9 @@ If you are ok with that list, execute this command to clean them up:
 This will iterate over all the environments created by `mlflow` and remove them.
 
 ## Release history
-* v1.0.0 - Initial release
-* v1.0.1 - A fix which drops rows in the dataset that are not in the proper geolocation
 * v1.0.2 - README.md file was updated
+* v1.0.1 - A fix which drops rows in the dataset that are not in the proper geolocation
+* v1.0.0 - Initial release
 
 ## License
 
